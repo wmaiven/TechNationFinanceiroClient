@@ -1,7 +1,20 @@
 ﻿@page "/"
+@using TechNationFinanceiroApi.Models
+@inject INotaFiscalService NotaFiscalService
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world</h1>
+
+@code {
+    IEnumerable<NotaFiscal> notasFiscais;
+
+    protected override async Task OnInitializedAsync()
+    {
+        notasFiscais = await NotaFiscalService.GetNotasFiscais();
+    }
+
+    // Outros métodos para manipular dados, como filtros, edições, etc.
+}
 
 Welcome to your new app.
