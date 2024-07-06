@@ -5,7 +5,7 @@ using TechNationFinanceiroClient;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddHttpClient<INotaFiscalService, NotaFiscalService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:32800/api/");
+    client.BaseAddress = new Uri("https://localhost:32878/api/");
 });
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
