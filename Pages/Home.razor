@@ -1,20 +1,275 @@
 ﻿@page "/"
 @using TechNationFinanceiroApi.Models
 @inject INotaFiscalService NotaFiscalService
+@inject IJSRuntime JSRuntime
 
-<PageTitle>Home</PageTitle>
 
-<h1>Hello, world</h1>
+<PageTitle>Dashboard</PageTitle>
+
+@if (notasFiscais == null)
+{
+    <p>Carregando...</p>
+}
+else
+{
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+                            <h4 class="mb-0 font-size-18">Dashboard</h4>
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <span class="badge badge-soft-primary float-right">Daily</span>
+                                    <h5 class="card-title mb-0">Valor Total das Notas Emitidas</h5>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-8">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            $17.21
+                                        </h2>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <span class="text-muted">
+                                            12.5% <i class="mdi mdi-arrow-up text-success"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="progress shadow-sm" style="height: 5px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 57%;">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <span class="badge badge-soft-primary float-right">Per Week</span>
+                                    <h5 class="card-title mb-0">Valor total das notas emitidas (Sem cobrança)</h5>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-8">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            $1875.54
+                                        </h2>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <span class="text-muted">
+                                            18.71% <i class="mdi mdi-arrow-down text-danger"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="progress shadow-sm" style="height: 5px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 57%;">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <span class="badge badge-soft-primary float-right">Per Month</span>
+                                    <h5 class="card-title mb-0">Valor total das notas vencidas (Inadimplência)</h5>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-8">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            $784.62
+                                        </h2>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <span class="text-muted">
+                                            57% <i class="mdi mdi-arrow-up text-success"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="progress shadow-sm" style="height: 5px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 57%;">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <span class="badge badge-soft-primary float-right">All Time</span>
+                                    <h5 class="card-title mb-0">Valor total das notas a vencer</h5>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-8">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            1,15,187
+                                        </h2>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <span class="text-muted">
+                                            17.8% <i class="mdi mdi-arrow-down text-danger"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="progress shadow-sm" style="height: 5px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 57%;"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <span class="badge badge-soft-primary float-right">All Time</span>
+                                    <h5 class="card-title mb-0">
+                                        Valor total das notas pagas;
+                                    </h5>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-8">
+                                        <h2 class="d-flex align-items-center mb-0">
+                                            1,15,187
+                                        </h2>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <span class="text-muted">
+                                            17.8% <i class="mdi mdi-arrow-down text-danger"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="progress shadow-sm" style="height: 5px;">
+                                    <div class="progress-bar bg-sencondary" role="progressbar" style="width: 57%;"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-lg-9">
+
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h4 class="card-title">Gráfico de evolução da inadimplência mês a mês;</h4>
+                                        <p class="card-subtitle mb-4"></p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title"></h4>
+                                        <p class="card-subtitle mb-4">
+                                            
+                                        </p>
+                                        <h3>$7841.12 <span class="badge badge-soft-success float-right">+7.5%</span></h3>
+                                    </div>
+                                </div>
+
+                                <div id="sparkline1" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-9">
+
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h4 class="card-title">Gráfico de evolução da inadimplência mês a mês;</h4>
+                                        <p class="card-subtitle mb-4"></p>
+                                        <div id="morris-bar-example" class="morris-chart"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title"></h4>
+                                        <p class="card-subtitle mb-4">
+
+                                        </p>
+                                        <h3>$7841.12 <span class="badge badge-soft-success float-right">+7.5%</span></h3>
+                                    </div>
+                                </div>
+
+                                <div id="sparkline1" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>         
+            </div>
+        </div>
+    </div>
+
+   
+}
 
 @code {
     IEnumerable<NotaFiscal> notasFiscais;
 
     protected override async Task OnInitializedAsync()
     {
-        notasFiscais = await NotaFiscalService.GetNotasFiscais();
-    }
+        try
+        {
+            notasFiscais = await NotaFiscalService.GetNotasFiscais();
 
-    // Outros métodos para manipular dados, como filtros, edições, etc.
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar dados: {ex.Message}");
+        }
+    }
 }
 
-Welcome to your new app.
+

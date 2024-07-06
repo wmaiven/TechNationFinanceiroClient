@@ -1,0 +1,65 @@
+﻿@page "/ListaNotas"
+@using TechNationFinanceiroApi.Models
+@inject INotaFiscalService NotaFiscalService
+
+<PageTitle>Lista Notas Fiscais</PageTitle>
+
+<h4 class="mb-0 font-size-18">Lista Notas Fiscais</h4>
+<br />
+@if (notasFiscais == null)
+{
+    <p>Carregando...</p>
+}
+else
+{
+    <table class="table table-success">
+        <thead>
+            <tr>
+                <th>Número de identificação da nota</th>
+                <th>Nome do Pagador</th>
+                <th>Data de emissão da nota</th>
+                <th>Data da cobrança</th>
+                <th>Data do pagamento</th>
+                <th>Valor da nota</th>
+                <th>Documento da nota fiscal</th>
+                <th>Documento do boleto bancário</th>
+                <th>Status da nota</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var notaFiscal in notasFiscais)
+            {
+                <tr>
+                    <td>@notaFiscal.Id</td>
+                    <td>@notaFiscal.NomePagador</td>
+                    <td>@notaFiscal.DataEmissao?.ToShortDateString()</td>
+                    <td>@notaFiscal.DataCobranca?.ToShortDateString()</td>
+                    <td>@notaFiscal.DataPagamento?.ToShortDateString()</td>
+                    <td>@notaFiscal.Valor</td>
+                    <td>@notaFiscal.DocumentoFiscal</td>
+                    <td>@notaFiscal.DocumentoBoleto</td>
+                    <td>@notaFiscal.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    IEnumerable<NotaFiscal> notasFiscais;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            notasFiscais = await NotaFiscalService.GetNotasFiscais();
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar dados: {ex.Message}");
+        }
+    }
+}
+
