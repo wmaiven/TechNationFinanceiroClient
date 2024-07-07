@@ -1,65 +1,136 @@
 ﻿@page "/ListaNotas"
 @using TechNationFinanceiroApi.Models
+@using Radzen.Blazor
+
 @inject INotaFiscalService NotaFiscalService
 
-<PageTitle>Lista Notas Fiscais</PageTitle>
+<PageTitle>Listagem de Notas Fiscais</PageTitle>
 
 <h4 class="mb-0 font-size-18">Lista Notas Fiscais</h4>
 <br />
+
 @if (notasFiscais == null)
 {
-    <p>Carregando...</p>
+    <p><em>Carregando...</em></p>
 }
 else
 {
-    <table class="table table-success">
-        <thead>
-            <tr>
-                <th>Número de identificação da nota</th>
-                <th>Nome do Pagador</th>
-                <th>Data de emissão da nota</th>
-                <th>Data da cobrança</th>
-                <th>Data do pagamento</th>
-                <th>Valor da nota</th>
-                <th>Documento da nota fiscal</th>
-                <th>Documento do boleto bancário</th>
-                <th>Status da nota</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var notaFiscal in notasFiscais)
-            {
-                <tr>
-                    <td>@notaFiscal.NumeroIdentificacao</td>
-                    <td>@notaFiscal.NomePagador</td>
-                    <td>@notaFiscal.DataEmissao?.ToShortDateString()</td>
-                    <td>@notaFiscal.DataCobranca?.ToShortDateString()</td>
-                    <td>@notaFiscal.DataPagamento?.ToShortDateString()</td>
-                    <td>@notaFiscal.Valor</td>
-                    <td>@notaFiscal.DocumentoFiscal</td>
-                    <td>@notaFiscal.DocumentoBoleto</td>
-                    <td>@notaFiscal.Status</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <RadzenDataGrid @ref="grid" Data=@filteredNotasFiscais FilterMode="FilterMode.Simple" AllowFiltering="true" AllowPaging="true" AllowSorting="true" ColumnWidth="150px" TItem="NotaFiscal">
+        <Columns>
+            <RadzenDataGridColumn Property="NumeroIdentificacao" Title="Número de identificação" Width="200px" />
+            <RadzenDataGridColumn Property="NomePagador" Title="Nome do Pagador" Width="200px" />
+            <RadzenDataGridColumn Property="DataEmissao" Title="Data de emissão" FormatString="{0:MM/yyyy}" Width="150px">
+                <FilterTemplate>
+                    <RadzenDropDown @bind-Value=filtroMesEmissao Style="width:100%;" Data=@meses TextProperty="Label" ValueProperty="Value" AllowClear="true" Change="@(args => OnFilter())" />
+                </FilterTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Property="DataCobranca" Title="Data da cobrança" FormatString="{0:MM/yyyy}" Width="150px">
+                <FilterTemplate>
+                    <RadzenDropDown @bind-Value=filtroMesCobranca Style="width:100%;" Data=@meses TextProperty="Label" ValueProperty="Value" AllowClear="true" Change="@(args => OnFilter())" />
+                </FilterTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Property="DataPagamento" Title="Data do pagamento" FormatString="{0:MM/yyyy}" Width="150px">
+                <FilterTemplate>
+                    <RadzenDropDown @bind-Value=filtroMesPagamento Style="width:100%;" Data=@meses TextProperty="Label" ValueProperty="Value" AllowClear="true" Change="@(args => OnFilter())" />
+                </FilterTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Property="Valor" Title="Valor da nota" Width="150px" />
+            <RadzenDataGridColumn Property="DocumentoFiscal" Title="Documento da nota fiscal" Width="200px" />
+            <RadzenDataGridColumn Property="DocumentoBoleto" Title="Documento do boleto bancário" Width="200px" />
+            <RadzenDataGridColumn Property="Status" Title="Status da nota" Width="200px">
+                <FilterTemplate>
+                    <RadzenDropDown @bind-Value=filtroStatus Style="width:100%;" Data=@statusOptions TextProperty="Label" ValueProperty="Value" AllowClear="true" Change="@(args => OnFilter())" />
+                </FilterTemplate>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
 }
 
-
 @code {
+    RadzenDataGrid<NotaFiscal> grid;
     IEnumerable<NotaFiscal> notasFiscais;
+    IEnumerable<NotaFiscal> filteredNotasFiscais;
+    string filtroMesEmissao;
+    string filtroMesCobranca;
+    string filtroMesPagamento;
+    string filtroStatus;
+
+
+    List<StatusOption> statusOptions = new List<StatusOption>
+    {
+        new StatusOption { Label = "Emitida", Value = "Emitida" },
+        new StatusOption { Label = "Cobrança Realizada", Value = "Cobrança Realizada" },
+        new StatusOption { Label = "Pagamento em Atraso", Value = "Pagamento em Atraso" },
+        new StatusOption { Label = "Pagamento Realizado", Value = "Pagamento Realizado" },
+    };
+
+    List<MesOption> meses = new List<MesOption>
+    {
+        new MesOption { Label = "Janeiro", Value = "01" },
+        new MesOption { Label = "Fevereiro", Value = "02" },
+        new MesOption { Label = "Março", Value = "03" },
+        new MesOption { Label = "Abril", Value = "04" },
+        new MesOption { Label = "Maio", Value = "05" },
+        new MesOption { Label = "Junho", Value = "06" },
+        new MesOption { Label = "Julho", Value = "07" },
+        new MesOption { Label = "Agosto", Value = "08" },
+        new MesOption { Label = "Setembro", Value = "09" },
+        new MesOption { Label = "Outubro", Value = "10" },
+        new MesOption { Label = "Novembro", Value = "11" },
+        new MesOption { Label = "Dezembro", Value = "12" },
+    };
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             notasFiscais = await NotaFiscalService.GetNotasFiscais();
-
+            filteredNotasFiscais = notasFiscais; // Initialize filteredNotasFiscais
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Erro ao carregar dados: {ex.Message}");
         }
     }
-}
 
+    private void OnFilter()
+    {
+        filteredNotasFiscais = notasFiscais;
+
+        // Aplicar filtro por mês de emissão
+        if (!string.IsNullOrEmpty(filtroMesEmissao))
+        {
+            filteredNotasFiscais = filteredNotasFiscais.Where(n => n.DataEmissao.HasValue && n.DataEmissao.Value.ToString("MM") == filtroMesEmissao);
+        }
+
+        // Aplicar filtro por mês de cobrança
+        if (!string.IsNullOrEmpty(filtroMesCobranca))
+        {
+            filteredNotasFiscais = filteredNotasFiscais.Where(n => n.DataCobranca.HasValue && n.DataCobranca.Value.ToString("MM") == filtroMesCobranca);
+        }
+
+        // Aplicar filtro por mês de pagamento
+        if (!string.IsNullOrEmpty(filtroMesPagamento))
+        {
+            filteredNotasFiscais = filteredNotasFiscais.Where(n => n.DataPagamento.HasValue && n.DataPagamento.Value.ToString("MM") == filtroMesPagamento);
+        }
+
+        // Aplicar filtro por status da nota
+        if (!string.IsNullOrEmpty(filtroStatus))
+        {
+            filteredNotasFiscais = filteredNotasFiscais.Where(n => n.Status == filtroStatus);
+        }
+    }
+
+    public class StatusOption
+    {
+        public string Label { get; set; }
+        public string Value { get; set; }
+    }
+
+    public class MesOption
+    {
+        public string Label { get; set; }
+        public string Value { get; set; }
+    }
+}
