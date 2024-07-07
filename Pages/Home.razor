@@ -6,10 +6,7 @@
 
 
 <PageTitle>Dashboard</PageTitle>
-
-
     <div class="main-content">
-
         <div class="page-content">
             <div class="container-fluid">
                 <div class="row">
@@ -20,7 +17,6 @@
                     </div>
                 </div>
                 <br />
-
                 <div class="row">
                     <div class="col-md-6 col-xl-3">
                         <div class="card">
@@ -35,16 +31,13 @@
                                         </h2>
                                     </div>
                                 </div>
-
                                 <div class="progress shadow-sm" style="height: 5px;">
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 100%;">
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
-
+                    </div
                     <div class="col-md-6 col-xl-4">
                         <div class="card">
                             <div class="card-body">
@@ -57,23 +50,15 @@
                                         R$@totalnotesissuedfreecharge
                                         </h2>
                                     </div>
-                                    <div class="col-4 text-right">
-                                        <span class="text-muted">
-                                            18.71% <i class="mdi mdi-arrow-down text-danger"></i>
-                                        </span>
-                                    </div>
                                 </div>
 
                                 <div class="progress shadow-sm" style="height: 5px;">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 57%;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 100%;">
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
-
                     <div class="col-md-6 col-xl-3">
                         <div class="card">
                             <div class="card-body">
@@ -86,15 +71,10 @@
                                         R$@totalnotesissuedue
                                         </h2>
                                     </div>
-                                    <div class="col-4 text-right">
-                                        <span class="text-muted">
-                                            17.8% <i class="mdi mdi-arrow-down text-danger"></i>
-                                        </span>
-                                    </div>
                                 </div>
 
                                 <div class="progress shadow-sm" style="height: 5px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 57%;"></div>
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;"></div>
                                 </div>
                             </div>
 
@@ -125,10 +105,8 @@
                 <br />
                 <div class="row">
                     <div class="col-lg-12">
-
                         <div class="card">
                             <div class="card-body">
-
                                 <div class="row">
                                     <div class="col-lg-12">
                                     <div>
@@ -141,7 +119,6 @@
                                                             <RadzenLineSeries Smooth="@smooth" Data="@recipepermouth" CategoryProperty="Date" Title="Receita Recebida" ValueProperty="Valor">
                                                                 <RadzenSeriesDataLabels Visible="@showDataLabels" />
                                                             </RadzenLineSeries>
-
                                                             <RadzenCategoryAxis Padding="20" />
                                                             <RadzenValueAxis Formatter="@FormatAsBRL">
                                                                 <RadzenGridLines Visible="true" />
@@ -169,14 +146,9 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
-                
-
                 </div>
-
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -185,8 +157,6 @@
                                 <div>
                                     <h4 class="card-title">Gráfico de evolução da inadimplência mês a mês</h4>
                                     <div class="col-lg-12">
-                                 
-                                        <!-- RadzenChart -->
                                         <RadzenChart>
                                             <RadzenAreaSeries Smooth="@smooth" Data="@inadimppermouth" CategoryProperty="Date" Title="Inadimplência" ValueProperty="Valor">
                                                 <RadzenSeriesDataLabels Visible="@showDataLabels" />
@@ -214,12 +184,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                             </div>
+                           </div>
                         </div>
-
-                        </div>
-                    </div>
-            
+                    </div>   
                 </div>
             </div>
         </div>

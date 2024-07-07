@@ -1,0 +1,40 @@
+﻿@page "/login"
+@inject NavigationManager Navigation
+
+<h3>Login</h3>
+
+<div class="form-group">
+    <label for="username">Usuário:</label>
+    <input id="username" type="text" class="form-control" @bind="Username" />
+</div>
+
+<div class="form-group">
+    <label for="password">Senha:</label>
+    <input id="password" type="password" class="form-control" @bind="Password" />
+</div>
+
+<button type="button" class="btn btn-primary" @onclick="DoLogin">Entrar</button>
+
+@if (ErrorMessage != null)
+{
+    <div class="alert alert-danger mt-3">@ErrorMessage</div>
+}
+
+@code {
+    private string Username { get; set; }
+    private string Password { get; set; }
+    private string ErrorMessage { get; set; }
+
+    private async Task DoLogin()
+    {
+        // Implementação simples para fins educativos
+        if (Username == "admin" && Password == "senha123")
+        {
+            Navigation.NavigateTo("/dashboard");
+        }
+        else
+        {
+            ErrorMessage = "Usuário ou senha inválidos. Por favor, tente novamente.";
+        }
+    }
+}
