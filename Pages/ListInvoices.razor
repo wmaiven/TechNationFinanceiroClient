@@ -11,13 +11,13 @@
 
 @if (notasFiscais == null)
 {
-    <p><em>Carregando...</em></p>
+    <p>Carregando...</p>
 }
 else
 {
-    <RadzenDataGrid @ref="grid" Data=@filteredNotasFiscais FilterMode="FilterMode.Simple" AllowFiltering="true" AllowPaging="true" AllowSorting="true" ColumnWidth="150px" TItem="NotaFiscal">
+    <RadzenDataGrid @ref="grid" Data=@filteredNotasFiscais FilterMode="FilterMode.Simple" AllowFiltering="true" AllowPaging="true" AllowSorting="true" ColumnWidth="auto" TItem="NotaFiscal">
         <Columns>
-            <RadzenDataGridColumn Property="NumeroIdentificacao" Title="Número de identificação" Width="200px" />
+            <RadzenDataGridColumn Property="NumeroIdentificacao" Title="Número de identificação" Width="150px" />
             <RadzenDataGridColumn Property="NomePagador" Title="Nome do Pagador" Width="200px" />
             <RadzenDataGridColumn Property="DataEmissao" Title="Data de emissão" FormatString="{0:MM/yyyy}" Width="150px">
                 <FilterTemplate>
