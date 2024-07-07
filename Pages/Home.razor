@@ -2,16 +2,12 @@
 @using TechNationFinanceiroApi.Models
 @inject INotaFiscalService NotaFiscalService
 @inject IJSRuntime JSRuntime
+@using System.Globalization
 
 
 <PageTitle>Dashboard</PageTitle>
 
-@if (notasFiscais == null)
-{
-    <p>Carregando...</p>
-}
-else
-{
+
     <div class="main-content">
 
         <div class="page-content">
@@ -173,15 +169,52 @@ else
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-12">
 
                         <div class="card">
                             <div class="card-body">
 
                                 <div class="row">
-                                    <div class="col-lg-8">
-                                        <h4 class="card-title">Gráfico de evolução da inadimplência mês a mês;</h4>
-                                        <p class="card-subtitle mb-4"></p>
+                                    <div class="col-lg-12">
+                                    <div>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h4 class="card-title">Gráfico de evolução da receita recebida mês a mês</h4>
+                                                        <RadzenChart>
+                                                            <RadzenLineSeries Smooth="@smooth" Data="@receitaPorMes" CategoryProperty="Date" Title="Receita Recebida" ValueProperty="Valor">
+                                                                <RadzenSeriesDataLabels Visible="@showDataLabels" />
+                                                            </RadzenLineSeries>
+
+                                                            <RadzenCategoryAxis Padding="20" />
+                                                            <RadzenValueAxis Formatter="@FormatAsUSD">
+                                                                <RadzenGridLines Visible="true" />
+                                                                <RadzenAxisTitle Text="Valor da Receita Recebida em USD" />
+                                                            </RadzenValueAxis>
+                                                        </RadzenChart>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="row align-items-center">
+                                                                <div class="col">
+                                                                    <h4 class="card-title"></h4>
+                                                                    <p class="card-subtitle mb-4">
+
+                                                                    </p>
+                                                                    <h3>$7841.12 <span class="badge badge-soft-success float-right">+7.5%</span></h3>
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="sparkline1" class="mt-3"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     </div>
 
                                 </div>
@@ -190,86 +223,120 @@ else
                         </div>
                     </div>
 
-                    <div class="col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title"></h4>
-                                        <p class="card-subtitle mb-4">
-                                            
-                                        </p>
-                                        <h3>$7841.12 <span class="badge badge-soft-success float-right">+7.5%</span></h3>
-                                    </div>
-                                </div>
-
-                                <div id="sparkline1" class="mt-3"></div>
-                            </div>
-                        </div>
-                    </div>
+                
 
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-9">
-
+                    <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div>
+                                    <h4 class="card-title">Gráfico de evolução da inadimplência mês a mês</h4>
+                                    <div class="col-lg-12">
+                                 
+                                        <!-- RadzenChart -->
+                                        <RadzenChart>
+                                            <RadzenAreaSeries Smooth="@smooth" Data="@inadimplenciaPorMes" CategoryProperty="Date" Title="Inadimplência" ValueProperty="Valor">
+                                                <RadzenSeriesDataLabels Visible="@showDataLabels" />
+                                            </RadzenAreaSeries>
 
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <h4 class="card-title">Gráfico de evolução da inadimplência mês a mês;</h4>
-                                        <p class="card-subtitle mb-4"></p>
-                                        <div id="morris-bar-example" class="morris-chart"></div>
+                                            <RadzenCategoryAxis Padding="20" />
+                                            <RadzenValueAxis Formatter="@FormatAsUSD">
+                                                <RadzenGridLines Visible="true" />
+                                                <RadzenAxisTitle Text="Valor da Inadimplência em USD" />
+                                            </RadzenValueAxis>
+                                        </RadzenChart>
                                     </div>
-
                                 </div>
                             </div>
+                            <div class="col-lg-3 border border-danger">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h4 class="card-title">Total de Inadimplência</h4>
+                                                <h3>1</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         </div>
                     </div>
-
-                    <div class="col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h4 class="card-title"></h4>
-                                        <p class="card-subtitle mb-4">
-
-                                        </p>
-                                        <h3>$7841.12 <span class="badge badge-soft-success float-right">+7.5%</span></h3>
-                                    </div>
-                                </div>
-
-                                <div id="sparkline1" class="mt-3"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>         
+            
+                </div>
             </div>
         </div>
     </div>
 
    
-}
+
+
 
 @code {
-    IEnumerable<NotaFiscal> notasFiscais;
+    bool smooth = true;
+    bool showDataLabels = false;
+    List<DataItem> inadimplenciaPorMes = new List<DataItem>(); // Será preenchido dinamicamente
+    List<DataItem> receitaPorMes = new List<DataItem>(); // Será preenchido dinamicamente
+    NotaFiscal[] notasFiscais; // Definir como membro da classe
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            notasFiscais = await NotaFiscalService.GetNotasFiscais();
+        // Chame seu serviço para obter dados de notas fiscais
+        notasFiscais = (await NotaFiscalService.GetNotasFiscais()).ToArray();
 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro ao carregar dados: {ex.Message}");
-        }
+        // Inicializar a lista de inadimplência por mês
+        InicializarInadimplenciaPorMes();
+
+        // Inicializar a lista de receita por mês
+        InicializarReceitaPorMes();
+    }
+
+    void InicializarInadimplenciaPorMes()
+    {
+        // Agrupar notas fiscais com status "Pagamento em Atraso" por mês e somar a inadimplência
+        inadimplenciaPorMes = notasFiscais
+            .Where(nota => nota.Status == "Pagamento em Atraso" && nota.DataCobranca.HasValue) // Considerar apenas notas com status adequado e data de cobrança
+            .GroupBy(nota => new { Month = nota.DataCobranca.Value.Month, Year = nota.DataCobranca.Value.Year })
+            .OrderBy(group => group.Key.Year)
+            .ThenBy(group => group.Key.Month)
+            .Select(group => new DataItem
+                {
+                    Date = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(group.Key.Month)} {group.Key.Year}",
+                    Valor = (double)group.Sum(nota => nota.Valor ?? 0)
+                })
+            .ToList();
+    }
+
+    void InicializarReceitaPorMes()
+    {
+        // Agrupar notas fiscais com status "Pagamento Realizado" por mês e somar a receita recebida
+        receitaPorMes = notasFiscais
+            .Where(nota => nota.Status == "Pagamento Realizado" && nota.DataPagamento.HasValue) // Considerar apenas notas com status adequado e data de pagamento
+            .GroupBy(nota => new { Month = nota.DataPagamento.Value.Month, Year = nota.DataPagamento.Value.Year })
+            .OrderBy(group => group.Key.Year)
+            .ThenBy(group => group.Key.Month)
+            .Select(group => new DataItem
+                {
+                    Date = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(group.Key.Month)} {group.Key.Year}",
+                    Valor = (double)group.Sum(nota => nota.Valor ?? 0)
+                })
+            .ToList();
+    }
+
+    string FormatAsUSD(object value)
+    {
+        return ((double)value).ToString("C0", CultureInfo.CreateSpecificCulture("en-US"));
+    }
+
+    // Definição da classe DataItem diretamente usando os dados da NotaFiscal
+    public class DataItem
+    {
+        public string Date { get; set; }
+        public double Valor { get; set; }
     }
 }
-
-

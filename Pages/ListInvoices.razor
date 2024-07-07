@@ -30,7 +30,7 @@ else
             @foreach (var notaFiscal in notasFiscais)
             {
                 <tr>
-                    <td>@notaFiscal.Id</td>
+                    <td>@notaFiscal.NumeroIdentificacao</td>
                     <td>@notaFiscal.NomePagador</td>
                     <td>@notaFiscal.DataEmissao?.ToShortDateString()</td>
                     <td>@notaFiscal.DataCobranca?.ToShortDateString()</td>
