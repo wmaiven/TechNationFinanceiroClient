@@ -1,4 +1,4 @@
-﻿namespace TechNationFinanceiroApi.Models
+﻿namespace TechNationFinanceiroClient.Models
 {
     public class NotaFiscal
     {

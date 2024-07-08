@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
-using TechNationFinanceiroApi.Models;
+using TechNationFinanceiroClient.Models;
+using TechNationFinanceiroClient.Services.Interfaces;
 
 public class NotaFiscalService : INotaFiscalService
 {
