@@ -3,10 +3,14 @@
 @inject INotaFiscalService NotaFiscalService
 @inject IJSRuntime JSRuntime
 @using System.Globalization
+@using TechNationFinanceiroClient.Services
 @using TechNationFinanceiroClient.Services.Interfaces
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
 
 
 <PageTitle>Dashboard</PageTitle>
+
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
@@ -194,6 +198,8 @@
         </div>
     </div>
 
+
+
    
 
 
@@ -207,6 +213,7 @@
     decimal totalrecipevalue;
     decimal totalnotesissuedfreecharge;
     decimal totalnotesissuedue;
+    private bool IsAuthenticated { get; set; }
 
 
     List<DataItem> inadimppermouth = new List<DataItem>(); // Será preenchido dinamicamente
@@ -216,6 +223,14 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //verifica se o user esta logado
+        IsAuthenticated = await AuthenticationService.IsAuthenticated();
+        if (!IsAuthenticated)
+        {
+           await AuthenticationService.Logout();
+
+        }
+
         // Chame seu serviço para obter dados de notas fiscais
         notasFiscais = (await NotaFiscalService.GetNotasFiscais()).ToArray();
 

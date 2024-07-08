@@ -2,6 +2,10 @@
 @using TechNationFinanceiroClient.Models
 @using Radzen.Blazor
 @using TechNationFinanceiroClient.Services.Interfaces
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
 
 @inject INotaFiscalService NotaFiscalService
 
@@ -55,6 +59,7 @@ else
     string filtroMesCobranca;
     string filtroMesPagamento;
     string filtroStatus;
+    private bool IsAuthenticated { get; set; }
 
 
     List<StatusOption> statusOptions = new List<StatusOption>
@@ -85,8 +90,15 @@ else
     {
         try
         {
+            //verifica se o user esta logado
+            IsAuthenticated = await AuthenticationService.IsAuthenticated();
+            if (!IsAuthenticated)
+            {
+                await AuthenticationService.Logout();
+
+            }
             notasFiscais = await NotaFiscalService.GetNotasFiscais();
-            filteredNotasFiscais = notasFiscais; // Initialize filteredNotasFiscais
+            filteredNotasFiscais = notasFiscais; 
         }
         catch (Exception ex)
         {
