@@ -1,5 +1,9 @@
 ﻿@page "/login"
+@using TechNationFinanceiroClient.Models
+@using TechNationFinanceiroClient.Services.Interfaces
 @inject NavigationManager Navigation
+@inject IAuthenticationService AuthenticationService
+@inject IJSRuntime JS
 
 <h3>Login</h3>
 
@@ -15,7 +19,7 @@
 
 <button type="button" class="btn btn-primary" @onclick="DoLogin">Entrar</button>
 
-@if (ErrorMessage != null)
+@if (!string.IsNullOrEmpty(ErrorMessage))
 {
     <div class="alert alert-danger mt-3">@ErrorMessage</div>
 }
@@ -27,13 +31,26 @@
 
     private async Task DoLogin()
     {
-        if (Username == "admin" && Password == "senha123")
+        try
         {
+            ErrorMessage = null;
+            var user = new User { Username = Username, Password = Password };
+            var token = await AuthenticationService.GetTokenAsync(user);
+
+            await JS.InvokeVoidAsync("localStorage.setItem", "authToken", token);
+
             Navigation.NavigateTo("/dashboard");
         }
-        else
+        catch (HttpRequestException ex)
         {
-            ErrorMessage = "Usuário ou senha inválidos. Por favor, tente novamente.";
+            if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                ErrorMessage = "Usuário ou senha inválidos. Por favor, tente novamente.";
+            }
+            else
+            {
+                ErrorMessage = "Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.";
+            }
         }
     }
 }
