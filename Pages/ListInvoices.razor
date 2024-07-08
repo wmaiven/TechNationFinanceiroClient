@@ -1,10 +1,12 @@
 ﻿@page "/ListaNotas"
+@using Microsoft.AspNetCore.Authorization
 @using TechNationFinanceiroClient.Models
 @using Radzen.Blazor
 @using TechNationFinanceiroClient.Services.Interfaces
 @inject IAuthenticationService AuthenticationService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@attribute [Authorize]
 
 
 @inject INotaFiscalService NotaFiscalService

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TechNationFinanceiroClient;
 using TechNationFinanceiroClient.Services;
 using TechNationFinanceiroClient.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -24,6 +25,9 @@ builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(cl
 {
     client.BaseAddress = new Uri("https://localhost:5001/api/"); 
 });
+
+// Adiciona o AuthorizationCore para registrar IAuthorizationPolicyProvider
+builder.Services.AddAuthorizationCore();
 
 
 //authenticate

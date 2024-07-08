@@ -2,50 +2,52 @@
 using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
 
-public class CustomAuthenticationStateProvider : AuthenticationStateProvider
+
+namespace TechNationFinanceiroClient.Services
 {
-    private readonly IJSRuntime _jsRuntime;
 
-    public CustomAuthenticationStateProvider(IJSRuntime jsRuntime)
+    public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        _jsRuntime = jsRuntime;
-    }
+        private readonly IJSRuntime _jsRuntime;
 
-    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-    {
-        var token = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
-        var isAuthenticated = !string.IsNullOrEmpty(token);
-
-        Console.WriteLine($"IsAuthenticated: {isAuthenticated}");
-
-        if (isAuthenticated)
+        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime)
         {
-            Console.WriteLine($"Token: {token}");
-
-            var claims = DecodeToken(token);
-            Console.WriteLine($"Claims: {string.Join(", ", claims)}");
-
-            var claimsIdentity = new ClaimsIdentity(claims, "jwt");
-            var user = new ClaimsPrincipal(claimsIdentity);
-            Console.WriteLine($"User: {user}");
-
-            return new AuthenticationState(user);
+            _jsRuntime = jsRuntime;
         }
-        else
+
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            Console.WriteLine("User is not authenticated");
-            return new AuthenticationState(new ClaimsPrincipal());
-        }
-    }
+            var token = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
+            var isAuthenticated = !string.IsNullOrEmpty(token);
 
-    private IEnumerable<Claim> DecodeToken(string token)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var jwtToken = tokenHandler.ReadJwtToken(token);
-        return jwtToken.Claims;
+            Console.WriteLine($"IsAuthenticated: {isAuthenticated}");
+
+            if (isAuthenticated)
+            {
+                Console.WriteLine($"Token: {token}");
+
+                var claims = DecodeToken(token);
+                Console.WriteLine($"Claims: {string.Join(", ", claims)}");
+
+                var claimsIdentity = new ClaimsIdentity(claims, "jwt");
+                var user = new ClaimsPrincipal(claimsIdentity);
+                Console.WriteLine($"User: {user}");
+
+                return new AuthenticationState(user);
+            }
+            else
+            {
+                Console.WriteLine("User is not authenticated");
+                return new AuthenticationState(new ClaimsPrincipal());
+            }
+        }
+
+        private IEnumerable<Claim> DecodeToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+            return jwtToken.Claims;
+        }
     }
 }

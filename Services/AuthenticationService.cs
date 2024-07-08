@@ -37,19 +37,13 @@ namespace TechNationFinanceiroClient.Services
         public async Task Logout()
         {
             await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "authToken");
-            _navigationManager.NavigateTo("/login");
+            _navigationManager.NavigateTo("/",true);
         }
 
         public async Task<bool> IsAuthenticated()
         {
             var token = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
             return !string.IsNullOrEmpty(token);
-        }
-
-        public async Task<string> GetTokenFromLocalStorage()
-        {
-            var token = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
-            return token;
         }
     }
 }
