@@ -15,7 +15,7 @@ namespace TechNationFinanceiroClient.Services
 
         public async Task<string> GetTokenAsync(User user)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/authenticate", user);
+            var response = await _httpClient.PostAsJsonAsync("User/login", user);
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsStringAsync();
