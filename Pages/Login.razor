@@ -37,8 +37,6 @@
             var user = new User { Username = Username, Password = Password };
             var token = await AuthenticationService.GetTokenAsync(user);
 
-            await JS.InvokeVoidAsync("localStorage.setItem", "authToken", token);
-
             Navigation.NavigateTo("/dashboard");
         }
         catch (HttpRequestException ex)
