@@ -1,4 +1,4 @@
-#Requisitos: docker, sqlserver, .net core 8.0
+#Requisitos: docker, .net core 8.0, rodar o backend, Passo a passo de como fazer isso: https://github.com/wmaiven/TechNationFinanceiroClient
 
   - Passo 1: clonar o projeto 
   - passo 2: compilar o projeto para instalar as dependencias
